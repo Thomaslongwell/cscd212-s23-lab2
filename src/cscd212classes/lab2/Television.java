@@ -2,7 +2,7 @@ package cscd212classes.lab2;
 
 import java.util.Objects;
 
-public class Television extends Object implements Comparable<Television>{
+public class Television implements Comparable<Television>{
     private final boolean fourK;
     private final String make;
     private final String model;
@@ -21,22 +21,16 @@ public class Television extends Object implements Comparable<Television>{
         this.resolution = resolution;
         this.make = make;
 
-
-        if(resolution == 2160){
+       if(resolution == 2160){
             this.fourK = true;
+        }
+        else{
+            this.fourK = false;
         }
     }
 
-    public Television(final String make, final String model, final boolean smart, final int screenSize, final int resolution)throws IllegalArgumentException{
-        if(model == null || model.isEmpty() || make == null || make.isEmpty() || screenSize < 32 || resolution < 720){
-            throw new IllegalArgumentException("Invalid Parameters");
-        }
-
-        this.make = make;
-        this.model = model;
-        this.smart = smart;
-        this.screenSize = screenSize;
-        this.resolution = resolution;
+    public Television(final String make, final String model, final boolean smart, final int screenSize, final int resolution){
+       this(model,smart,screenSize,resolution,make);
     }
 
     public String getMake() {
@@ -57,20 +51,27 @@ public class Television extends Object implements Comparable<Television>{
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) return true;
-        if(o == null) return false;
-        if (!(o instanceof Television that)) return false;
+        if (o == this) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        if (!(o instanceof Television)) {
+            return false;
+        }
+        Television that = (Television) o;
         return fourK == that.fourK && resolution == that.resolution && screenSize == that.screenSize && smart == that.smart && make.equals(that.make) && model.equals(that.model);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fourK, make, model, resolution, screenSize, smart);
+        return String.hashCode(make);
     }
 
     @Override
     public String toString() {
-        String tv = this.make + "-" + this.model + ", " + this.screenSize + "inch";
+        String tv = this.make + "-" + this.model + ", " + this.screenSize + " inch";
         if(this.smart == true){
           tv =  tv + " smart";
         }
@@ -78,6 +79,9 @@ public class Television extends Object implements Comparable<Television>{
 
         if(this.fourK == true){
             tv = tv + " with 4K resolution";
+        }
+        else{
+            tv = tv + " with " + resolution + " resolution";
         }
         return tv;
     }
