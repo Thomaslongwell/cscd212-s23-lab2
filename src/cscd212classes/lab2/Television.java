@@ -20,6 +20,11 @@ public class Television extends Object implements Comparable<Television>{
         this.screenSize = screenSize;
         this.resolution = resolution;
         this.make = make;
+
+
+        if(resolution == 2160){
+            this.fourK = true;
+        }
     }
 
     public Television(final String make, final String model, final boolean smart, final int screenSize, final int resolution)throws IllegalArgumentException{
@@ -52,7 +57,8 @@ public class Television extends Object implements Comparable<Television>{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (o == this) return true;
+        if(o == null) return false;
         if (!(o instanceof Television that)) return false;
         return fourK == that.fourK && resolution == that.resolution && screenSize == that.screenSize && smart == that.smart && make.equals(that.make) && model.equals(that.model);
     }
@@ -64,10 +70,15 @@ public class Television extends Object implements Comparable<Television>{
 
     @Override
     public String toString() {
-        String tv = this.make + this.model + this.screenSize;
-        if(getResolution() == 2160)
-            this.fourK = true;
+        String tv = this.make + "-" + this.model + ", " + this.screenSize + "inch";
+        if(this.smart == true){
+          tv =  tv + " smart";
+        }
+        tv = tv + " tv";
 
+        if(this.fourK == true){
+            tv = tv + " with 4K resolution";
+        }
         return tv;
     }
 
